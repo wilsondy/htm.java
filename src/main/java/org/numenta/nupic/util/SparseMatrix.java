@@ -19,6 +19,7 @@
  * http://numenta.org/licenses/
  * ---------------------------------------------------------------------
  */
+
 package org.numenta.nupic.util;
 
 import gnu.trove.list.TIntList;
@@ -31,18 +32,19 @@ import java.util.Arrays;
  * Allows storage of array data in sparse form, meaning that the indexes
  * of the data stored are maintained while empty indexes are not. This allows
  * savings in memory and computational efficiency because iterative algorithms
- * need only query indexes containing valid data.
+ * need only query indexes containing valid data. The dimensions of matrix defined
+ * at construction time and immutable - matrix fixed size data structure.
  * 
  * @author David Ray
  *
  * @param <T>
  */
 public abstract class SparseMatrix<T> {
-	protected int[] dimensionMultiples;
-    protected int[] dimensions;
-    protected int numDimensions;
+	protected final int[] dimensionMultiples;
+    protected final int[] dimensions;
+    protected final int numDimensions;
     
-    protected boolean isColumnMajor;
+    protected final boolean isColumnMajor;
     
     public SparseMatrix(int[] dimensions) {
         this(dimensions, false);
@@ -263,7 +265,7 @@ public abstract class SparseMatrix<T> {
         T[] retVal = (T[])Array.newInstance(factory.typeClass(), dimensions);
         fill(factory, 0, dimensions, dimensions[0], retVal);
         
-        return (T[])retVal;
+        return retVal;
     }
     
     /**
@@ -288,9 +290,9 @@ public abstract class SparseMatrix<T> {
             for(int i = 0;i < count;i++) {
                 int[] inner = copyInnerArray(dimensions);
                 T[] r = (T[])Array.newInstance(f.typeClass(), inner);
-                arr[i] = (Object[])fill(f, dimensionIndex + 1, inner, this.dimensions[dimensionIndex + 1], r);
+                arr[i] = fill(f, dimensionIndex + 1, inner, this.dimensions[dimensionIndex + 1], r);
             }
-            return (T[])arr;
+            return arr;
         }
     }
     
@@ -303,9 +305,7 @@ public abstract class SparseMatrix<T> {
         if(array.length == 1) return array;
         
         int[] retVal = new int[array.length - 1];
-        for(int i = 1;i < array.length;i++) {
-            retVal[i - 1] = array[i];
-        }
+        System.arraycopy(array, 1, retVal, 0, array.length - 1);
         return retVal;
     }
     
@@ -401,9 +401,7 @@ public abstract class SparseMatrix<T> {
         }
         for(int i = 0;i < index.length - 1;i++) {
         	if(index[i] >= dimensions[i]) {
-        		System.out.println("index = " + index[i] + ",  dimensions = " + dimensions[i] + ",  i = " + i );
-                
-                throw new IllegalArgumentException("Specified coordinates exceed the configured array dimensions " +
+        		throw new IllegalArgumentException("Specified coordinates exceed the configured array dimensions " +
                     print1DArray(index) + " > " + print1DArray(dimensions));
             }
         }

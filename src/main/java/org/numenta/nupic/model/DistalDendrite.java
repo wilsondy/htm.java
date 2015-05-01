@@ -19,6 +19,7 @@
  * http://numenta.org/licenses/
  * ---------------------------------------------------------------------
  */
+
 package org.numenta.nupic.model;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ import org.numenta.nupic.Connections;
 public class DistalDendrite extends Segment {
     private Cell cell;
     private int index;
+    
+    private static final Set<Synapse> EMPTY_SYNAPSE_SET = Collections.emptySet();
     
     /**
      * Constructs a new {@code Segment} object with the specified
@@ -101,18 +104,21 @@ public class DistalDendrite extends Segment {
      * @return
      */
     public Set<Synapse> getConnectedActiveSynapses(Map<DistalDendrite, Set<Synapse>> activeSynapsesForSegment, double permanenceThreshold) {
-        Set<Synapse> connectedSynapses = new LinkedHashSet<Synapse>();
+        Set<Synapse> connectedSynapses = null;
         
         if(!activeSynapsesForSegment.containsKey(this)) {
-            return connectedSynapses;
+            return EMPTY_SYNAPSE_SET;
         }
         
         for(Synapse s : activeSynapsesForSegment.get(this)) {
             if(s.getPermanence() >= permanenceThreshold) {
+            	if(connectedSynapses == null) {
+            		connectedSynapses = new LinkedHashSet<Synapse>();
+            	}
                 connectedSynapses.add(s);
             }
         }
-        return connectedSynapses;
+        return connectedSynapses == null ? EMPTY_SYNAPSE_SET : connectedSynapses;
     }
     
     /**

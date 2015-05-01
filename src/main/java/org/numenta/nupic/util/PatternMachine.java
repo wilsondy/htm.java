@@ -19,6 +19,7 @@
  * http://numenta.org/licenses/
  * ---------------------------------------------------------------------
  */
+
 package org.numenta.nupic.util;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import java.util.TreeMap;
  * Utilities for generating and manipulating patterns, for use in
  * experimentation and tests.
  * 
+ * @author Chetan Surpur
  * @author David Ray
  *
  * @see ConsecutivePatternMachine
@@ -87,9 +89,6 @@ public class PatternMachine {
     public void generate() {
         LinkedHashSet<Integer> pattern;
         for(int i = 0;i < numPatterns;i++) {
-            if(i == 80) {
-                System.out.println("at index 80");
-            }
             pattern = sample(new ArrayList<Integer>(xrange(0, n)), w);
             patterns.put(i, pattern);
         }

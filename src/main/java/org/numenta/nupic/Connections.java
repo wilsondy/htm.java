@@ -19,6 +19,7 @@
  * http://numenta.org/licenses/
  * ---------------------------------------------------------------------
  */
+
 package org.numenta.nupic;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class Connections {
     private double[] tieBreaker;
     /** 
      * Stores the number of connected synapses for each column. This is simply
-     * a sum of each row of 'self._connectedSynapses'. again, while this
+     * a sum of each row of 'connectedSynapses'. again, while this
      * information is readily available from 'connectedSynapses', it is
      * stored separately for efficiency purposes.
      */
@@ -129,7 +130,6 @@ public class Connections {
     private double[] minOverlapDutyCycles;
     private double[] minActiveDutyCycles;
     private double[] boostFactors;
-    
     
 	/////////////////////////////////////// Temporal Memory Vars ///////////////////////////////////////////
     
@@ -855,7 +855,7 @@ public class Connections {
      * used if the duty cycle is >= minOverlapDutyCycle,
      * maxBoost is used if the duty cycle is 0, and any duty
      * cycle in between is linearly extrapolated from these
-     * 2 endpoints.
+     * 2 end points.
      * 
      * @param maxBoost
      */
@@ -1037,7 +1037,7 @@ public class Connections {
      * High verbose output useful for debugging
      */
     public void printParameters() {
-        System.out.println("------------J  SpatialPooler Parameters ------------------");
+        System.out.println("------------ SpatialPooler Parameters ------------------");
         System.out.println("numInputs                  = " + getNumInputs());
         System.out.println("numColumns                 = " + getNumColumns());
         System.out.println("columnDimensions           = " + getColumnDimensions());
@@ -1377,7 +1377,7 @@ public class Connections {
     /**
      * If the number of synapses active on a segment is at least this
      * threshold, it is selected as the best matching
-     * cell in a bursing column.
+     * cell in a bursting column.
      * 
      * @param   minThreshold
      */
@@ -1404,7 +1404,7 @@ public class Connections {
     
     /**
      * Returns the maximum number of synapses added to a segment during
-     * learing.
+     * learning.
      * 
      * @return
      */
@@ -1498,7 +1498,7 @@ public class Connections {
      * @param cells
      * @return
      */
-    public List<Integer> asCellIndexes(Collection<Cell> cells) {
+    public static List<Integer> asCellIndexes(Collection<Cell> cells) {
         List<Integer> ints = new ArrayList<Integer>();
         for(Cell cell : cells) {
             ints.add(cell.getIndex());
@@ -1514,7 +1514,7 @@ public class Connections {
      * @param columns
      * @return
      */
-    public List<Integer> asColumnIndexes(Collection<Column> columns) {
+    public static List<Integer> asColumnIndexes(Collection<Column> columns) {
         List<Integer> ints = new ArrayList<Integer>();
         for(Column col : columns) {
             ints.add(col.getIndex());

@@ -1,7 +1,8 @@
 language: java
 
+jdk:
+  - oraclejdk8
+
 after_success:
   - sudo chown -R ${USER} /home/travis/build/numenta
-  - mkdir -p target/site/cobertura
-  - find . -name coverage.xml
-  - mvn cobertura:cobertura coveralls:cobertura
+  - mvn clean test jacoco:report coveralls:report
